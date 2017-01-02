@@ -3,7 +3,11 @@ var webpack = require('webpack')
 var BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 
 module.exports = {
-  entry: './index.js',
+  entry: [
+    'webpack-dev-server/client?http://0.0.0.0:8080', // WebpackDevServer host and port
+    'webpack/hot/only-dev-server', // "only" prevents reload on syntax errors './index.js'
+    './index.js'
+  ],
   output: { path: __dirname, filename: 'bundle.js' },
   devtool: "eval-source-map",
   resolve: {
@@ -12,7 +16,7 @@ module.exports = {
   module: {
     loaders: [{
       test: /.jsx?$/,
-      loader: 'babel-loader',
+      loaders: ['react-hot', 'babel-loader'],
       exclude: /node_modules/
     }]
   },
@@ -24,7 +28,9 @@ module.exports = {
       host: 'localhost',
       port: 3000,
       proxy: 'http://localhost:8080/'
-    }
- )]
+    }, {
+      reload: false
+    })
+  ]
 }
 
